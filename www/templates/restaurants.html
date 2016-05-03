@@ -1,0 +1,10 @@
+<ion-view view-title="Restaurants">
+  <ion-content>
+    <ion-list>
+      <ion-item ng-repeat="restaurant in restaurants" href="#/app/restaurants/{{restaurant.id}}">
+        <img ng-src="{{restaurant.img}}">
+        <p>{{restaurant.title}}</p>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
