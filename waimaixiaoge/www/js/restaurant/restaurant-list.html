@@ -1,0 +1,36 @@
+<ion-view>
+	<ion-nav-buttons side="secondary">
+		<button class="button button-icon icon ion-ios-search-strong" ng-click="showFilterBar()"></button>
+	</ion-nav-buttons>
+	<div class="bar bar-subheader">
+      <label class="item item-input item-select">
+        <div class="input-label">
+          美食
+        </div>
+        <select>
+          <option selected>全部</option>
+          <option>川菜</option>
+          <option>粤菜</option>
+        </select>
+      </label>
+      <label class="item item-input item-select">
+        <div class="input-label">
+          营业
+        </div>
+        <select>
+          <option selected>全部</option>
+          <option>营业中</option>
+          <option>休息中</option>
+        </select>
+      </label>
+  </div>
+	<ion-content class="has-subheader">
+		<ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()"></ion-refresher>
+		<ion-list>
+			<ion-item ng-repeat="restaurant in restaurants" ng-click="restaurantDetails(restaurant)">
+				<img ng-src="{{ restaurant.restaurantThumbnail.S }}">
+				<span class="restaurant-title">{{ restaurant.restaurantName.S }}</span>
+			</ion-item>
+		</ion-list>
+	</ion-content>
+</ion-view>

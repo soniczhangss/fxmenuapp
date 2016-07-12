@@ -25,42 +25,30 @@
     .state('app', {
       url: '/app',
       abstract: true,
-      templateUrl: 'templates/menu.html'
+      templateUrl: 'js/layout/menu.html',
+      controller: 'MenuController'
     })
-    .state('app.search', {
-      url: '/search',
+    .state('app.restaurant-list', {
+      url: '/restaurant-list',
       views: {
         'menuContent': {
-          templateUrl: 'templates/search.html'
+          templateUrl: 'js/restaurant/restaurant-list.html',
+          controller: 'RestaurantListController'
         }
       }
     })
-    .state('app.browse', {
-      url: '/browse',
+    .state('app.restaurant', {
+      url: '/restaurant',
       views: {
         'menuContent': {
-          templateUrl: 'templates/browse.html'
+          templateUrl: 'js/restaurant/restaurant.html',
+          controller: 'RestaurantController'
         }
-      }
-    })
-    .state('app.playlists', {
-      url: '/playlists',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/playlists.html'
-        }
-      }
-    })
-    .state('app.single', {
-      url: '/playlists/:playlistId',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/playlist.html'
-        }
-      }
+      },
+      params: { restaurant: null}
     });
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/app/playlists');
+    $urlRouterProvider.otherwise('/app/restaurant-list');
   });
 
 })();

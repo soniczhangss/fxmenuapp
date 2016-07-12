@@ -4,3 +4,52 @@
 	border-radius: 5px;
 	width: 100%;
 }
+
+img { 
+   position: relative; 
+   width: 100%; /* for IE 6 */
+}
+
+.restaurant-title {
+	position: absolute; 
+	bottom: 20px; 
+	left: 0; 
+	width: 100%; 
+	color: white;
+	text-shadow: 2px 2px 5px #000000;
+	font: 24px/45px Helvetica, Sans-Serif; 
+	letter-spacing: -1px;
+	padding: 10px; 
+}
+
+.bar.bar-profile {
+	background-color: #eee;
+	height: 170px;
+}
+
+.bar .profile {
+	top: 0;
+	right: 0;
+	left: 0;
+	z-index: 0;
+	overflow: hidden;
+	text-align: center;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 100%;
+	padding-top: 15px;
+}
+
+.profile .name {
+	color: #FFFFFF;
+	margin-top: 10px !important;
+	margin-bottom: 10px !important;
+}
+
+.profile-picture {
+	border-radius: 50%;
+}
+
+.menu .has-header {
+	top: 169px;
+}
