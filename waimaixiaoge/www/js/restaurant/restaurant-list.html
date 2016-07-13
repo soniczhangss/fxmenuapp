@@ -23,13 +23,13 @@
           <option>休息中</option>
         </select>
       </label>
-    </div>
+  </div>
 	<ion-content class="has-subheader">
 		<ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()"></ion-refresher>
 		<ion-list>
-			<ion-item ng-repeat="restaurant in restaurants" href="#/app/restaurant-list/{{restaurant.restaurantId.S}}">
-				<img id="restaurant-list-img" ng-src="{{ restaurant.restaurantThumbnail.S }}">
-				<p>{{ restaurant.restaurantName.S }}</p>
+			<ion-item ng-repeat="restaurant in restaurants" ng-click="restaurantDetails(restaurant)">
+				<img ng-src="{{ restaurant.restaurantThumbnail.S }}">
+				<span class="restaurant-title">{{ restaurant.restaurantName.S }}</span>
 			</ion-item>
 		</ion-list>
 	</ion-content>

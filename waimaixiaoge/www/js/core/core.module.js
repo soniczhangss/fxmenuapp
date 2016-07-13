@@ -2,5 +2,5 @@
   'use strict';
 
   angular
-    .module('app.core', ['ionic', 'jett.ionic.filter.bar']);
+    .module('app.core', ['ionic', 'jett.ionic.filter.bar', 'LocalStorageModule']);
 })();

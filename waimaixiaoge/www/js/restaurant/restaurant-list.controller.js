@@ -5,10 +5,14 @@
     .module('app.restaurant')
     .controller('RestaurantListController', RestaurantListController);
 
-  RestaurantListController.$inject = ['dataservice', '$scope', '$ionicFilterBar', '$timeout'];
+  RestaurantListController.$inject = ['dataservice', '$scope', '$ionicFilterBar', '$timeout', '$state'];
   /* @ngInject */
-  function RestaurantListController(dataservice, $scope, $ionicFilterBar, $timeout) {
+  function RestaurantListController(dataservice, $scope, $ionicFilterBar, $timeout, $state) {
     var filterBarInstance;
+
+    $scope.restaurantDetails = function (restaurant) {
+       $state.go("app.restaurant", {restaurant: restaurant});
+    };
 
     $scope.doRefresh = function () {
       if (filterBarInstance) {

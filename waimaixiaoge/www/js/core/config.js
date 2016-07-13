@@ -19,7 +19,7 @@
     });
   })
 
-  core.config(function($stateProvider, $urlRouterProvider) {
+  core.config(function($stateProvider, $urlRouterProvider, localStorageServiceProvider) {
     $stateProvider
 
     .state('app', {
@@ -38,16 +38,28 @@
       }
     })
     .state('app.restaurant', {
-      url: '/restaurant-list/:restaurantId',
+      url: '/restaurant',
       views: {
         'menuContent': {
           templateUrl: 'js/restaurant/restaurant.html',
           controller: 'RestaurantController'
         }
+      },
+      params: { restaurant: null}
+    })
+    .state('app.checkout', {
+      url: '/checkout',
+      views: {
+        'menuContent': {
+          templateUrl: 'js/layout/checkout.html'
+        }
       }
     });
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/app/restaurant-list');
+
+    localStorageServiceProvider
+      .setPrefix('waimaixiaoge');
   });
 
 })();

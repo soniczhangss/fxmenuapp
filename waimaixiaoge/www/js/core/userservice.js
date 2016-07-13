@@ -5,24 +5,72 @@
     .module('app.core')
     .factory('userservice', userservice);
 
-  userservice.$inject = ['$q', '$filter', 'dbRegion', 'dbAccessKeyId', 'dbSecretAccessKey', 'poolId', 'appClientId'];
+  userservice.$inject = ['$q', '$filter', 'dbRegion', 'cognitoAccessKeyId', 'cognitoSecretAccessKey', 'dbAccessKeyId', 'dbSecretAccessKey', 'poolId', 'appClientId'];
   /* @ngInject */
-  function userservice($q, $filter, dbRegion, dbAccessKeyId, dbSecretAccessKey, poolId, appClientId) {
-    AWS.config.update({region: dbRegion, accessKeyId: dbAccessKeyId, secretAccessKey: dbSecretAccessKey});
+  function userservice($q, $filter, dbRegion, cognitoAccessKeyId, cognitoSecretAccessKey, dbAccessKeyId, dbSecretAccessKey, poolId, appClientId) {
+    //AWS.config.update({region: dbRegion, accessKeyId: dbAccessKeyId, secretAccessKey: dbSecretAccessKey});
 
     var service = {
       validateAnUser: validateAnUser,
-      registerAnUser: registerAnUser
+      registerAnUser: registerAnUser,
+      signinAnUser: signinAnUser
     };
 
     return service;
 
-    function validateAnUser(user) {
-      var deferred = $q.defer();
+    function signinAnUser(username, password) {
+      AWS.config.region = dbRegion;
+      AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: poolId
+      });
+      AWSCognito.config.region = dbRegion;
+      AWSCognito.config.credentials = new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: poolId
+      });
+      AWSCognito.config.update({accessKeyId: cognitoAccessKeyId, secretAccessKey: cognitoSecretAccessKey});
+      var authenticationData = {
+        Username : username,
+        Password : password
+      };
+      var authenticationDetails = new AWSCognito.CognitoIdentityServiceProvider.AuthenticationDetails(authenticationData);
+      var poolData = {
+        UserPoolId : poolId,
+        ClientId : appClientId
+      };
+      var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+      var userData = {
+        Username : username,
+        Pool : userPool
+      };
+      var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
+      cognitoUser.authenticateUser(authenticationDetails, {
+          onSuccess: function (result) {
+            console.log('access token + ' + result.getAccessToken().getJwtToken());
+          },
 
+          onFailure: function(err) {
+            console.log(err);
+          },
 
+      });
+    }
 
-      return promise
+    function validateAnUser() {
+      var isValidUser = false;
+      var data = {
+        UserPoolId : poolId,
+        ClientId : appClientId
+      };
+      var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(data);
+      var cognitoUser = userPool.getCurrentUser();
+
+      if (cognitoUser != null) {
+        cognitoUser.getSession(function(err, session) {
+          isValidUser = session.isValid();
+        });
+      }
+
+      return isValidUser;
     }
 
     /*

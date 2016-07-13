@@ -7,7 +7,7 @@
         </button>
       </ion-nav-buttons>
       <ion-nav-buttons side="right">
-      <button class="button button-icon icon ion-ios-cart-outline""><sup>2</sup></button>
+      <button class="button button-icon icon ion-ios-cart-outline" ng-click="openShoppingCart()"><sup>{{ shoppingcart.length }}</sup></button>
       </ion-nav-buttons>
     </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>

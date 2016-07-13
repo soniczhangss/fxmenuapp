@@ -5,9 +5,13 @@
     .module('app.restaurant')
     .controller('RestaurantController', RestaurantController);
 
-  RestaurantController.$inject = ['$scope', '$stateParams'];
+  RestaurantController.$inject = ['$scope', '$stateParams', 'shoppingcartservice'];
   /* @ngInject */
-  function RestaurantController($scope, $stateParams) {
-    $scope.restaurantId = $stateParams
+  function RestaurantController($scope, $stateParams, shoppingcartservice) {
+    $scope.restaurant = $stateParams.restaurant;
+
+    $scope.addToCart = function(item) {
+		shoppingcartservice.addAnItem(item);
+	};
   }
 })();
