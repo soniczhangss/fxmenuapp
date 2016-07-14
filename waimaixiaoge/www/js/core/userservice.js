@@ -12,7 +12,7 @@
 
     var service = {
       validateAnUser: validateAnUser,
-      registerAnUser: registerAnUser,
+      signupAnUser: signupAnUser,
       signinAnUser: signinAnUser
     };
 
@@ -43,16 +43,19 @@
         Pool : userPool
       };
       var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
+      var deferred = $q.defer();
       cognitoUser.authenticateUser(authenticationDetails, {
           onSuccess: function (result) {
+            deferred.resolve(result);
             console.log('access token + ' + result.getAccessToken().getJwtToken());
           },
 
           onFailure: function(err) {
-            console.log(err);
+            deferred.reject(err);
           },
 
       });
+      return deferred.promise;
     }
 
     function validateAnUser() {
@@ -73,10 +76,7 @@
       return isValidUser;
     }
 
-    /*
-     * require email, username, password
-     */
-    function registerAnUser(user) {
+    function signupAnUser(email, username, password) {
       AWS.config.region = dbRegion;
       AWS.config.credentials = new AWS.CognitoIdentityCredentials({
           IdentityPoolId: poolId
@@ -86,6 +86,8 @@
       AWSCognito.config.credentials = new AWS.CognitoIdentityCredentials({
           IdentityPoolId: poolId
       });
+
+      AWSCognito.config.update({accessKeyId: cognitoAccessKeyId, secretAccessKey: cognitoSecretAccessKey});
           
       var poolData = { UserPoolId : poolId,
           ClientId : appClientId
@@ -96,14 +98,14 @@
       
       var dataEmail = {
           Name : 'email',
-          Value : user.email
+          Value : email
       };
       var attributeEmail = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataEmail);
 
       attributeList.push(attributeEmail);
 
       var deferred = $q.defer();
-      userPool.signUp(user.username, user.password, attributeList, null, function(err, result){
+      userPool.signUp(username, password, attributeList, null, function(err, result){
           if (err) {
             deferred.reject(err);
           } 
@@ -111,7 +113,7 @@
             deferred.resolve(result.user);
           }
       });
-      return promise;
+      return deferred.promise;
     }
   }
 })();

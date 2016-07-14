@@ -11,5 +11,7 @@
     .constant('cognitoSecretAccessKey', 'TONzpA39EdRuWRCWcFg7tB3KNHO+Ig+wDYAXKDCp')
     .constant('imgRepository', 'https://s3.amazonaws.com/fxmenu-admin-restaurant-img/')
     .constant('poolId', 'us-east-1_S7YIiOyqI')
-    .constant('appClientId', 'l6n2n1j23qofohf9m2kqfcabo');
+    .constant('appClientId', 'l6n2n1j23qofohf9m2kqfcabo')
+    .constant('dynamoDBRestaurantTableName', 'Restaurant-fxmenu')
+    .constant('dynamoDBOrderTableName', 'Order-fxmenu');
 })();
