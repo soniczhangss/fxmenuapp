@@ -32,7 +32,6 @@
         update: function (filteredItems, filterText) {
           $scope.restaurants = filteredItems;
           if (filterText) {
-            console.log(filterText);
           }
         }
       });
@@ -48,7 +47,6 @@
           $scope.restaurants = result.Items;
         },
         function (error) {
-          console.log(error.statusText);
         }
       );
     };

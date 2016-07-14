@@ -10,6 +10,16 @@
   function MenuController($scope, $ionicPopup, dataservice, shoppingcartservice, $ionicModal, userservice, $state) {
   	$scope.shoppingcart = shoppingcartservice.shoppingcart;
 
+  	$scope.user = {
+  		username: '登录',
+  		portrait: ''
+  	};
+
+  	$scope.$on("side-menu open", function () {
+  		$scope.isSignedIn = userservice.validateAnUser();
+  		// load user information
+  	});
+
   	$scope.checkout = function (address, contactNum, selectedPaymentMethod) {
   		dataservice.checkout(address, contactNum, selectedPaymentMethod, shoppingcartservice.shoppingcart).then(
   			function (result) {
@@ -74,6 +84,7 @@
 
 	$scope.openSignupModal = function() {
 		$scope.signupModal.show();
+		$scope.closeSigninModal();
 	};
 	$scope.closeSignupModal = function() {
 		$scope.signupModal.hide();
@@ -110,14 +121,8 @@
 	// Cleanup the modal when we're done with it!
 	$scope.$on('$destroy', function() {
 		$scope.shoppingcartModal.remove();
-	});
-	// Execute action on hide modal
-		$scope.$on('modal.hidden', function() {
-	// Execute action
-	});
-	// Execute action on remove modal
-		$scope.$on('modal.removed', function() {
-	// Execute action
+		$scope.signinModal.remove();
+		$scope.signupModal.remove();
 	});
   }
 })();

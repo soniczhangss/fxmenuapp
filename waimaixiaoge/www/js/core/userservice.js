@@ -69,7 +69,8 @@
 
       if (cognitoUser != null) {
         cognitoUser.getSession(function(err, session) {
-          isValidUser = session.isValid();
+          if (session != null)
+            isValidUser = session.isValid();
         });
       }
 

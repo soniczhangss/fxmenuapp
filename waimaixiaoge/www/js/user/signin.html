@@ -17,7 +17,14 @@
           <input type="password" ng-model="password">
         </label>
         <label class="item">
-          <button class="button button-block button-positive" type="submit">Log in</button>
+          <div class="row">
+            <div class="col col-50">
+              <input type="button" class="button button-block button-outline button-dark" ng-click="openSignupModal()" value="注册"></input>
+            </div>
+            <div class="col col-50">
+              <button class="button button-block button-outline button-positive" type="submit">登录</button>
+            </div>
+          </div>
         </label>
       </div>
     </form>

@@ -3,7 +3,7 @@
 
   var core = angular.module('app.core');
 
-  core.run(function($ionicPlatform) {
+  core.run(function($ionicPlatform, $rootScope, $ionicSideMenuDelegate) {
     $ionicPlatform.ready(function() {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -16,6 +16,17 @@
         // org.apache.cordova.statusbar required
         StatusBar.styleDefault();
       }
+
+      $rootScope.$watch(
+        function () {
+          return $ionicSideMenuDelegate.isOpenLeft();
+        },
+        function (isOpen) {
+          if (isOpen){
+            $rootScope.$broadcast("side-menu open");
+          }
+        }
+      );
     });
   })
 
