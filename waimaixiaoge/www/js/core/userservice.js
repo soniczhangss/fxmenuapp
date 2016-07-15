@@ -5,30 +5,79 @@
     .module('app.core')
     .factory('userservice', userservice);
 
-  userservice.$inject = ['$q', '$filter', 'dbRegion', 'dbAccessKeyId', 'dbSecretAccessKey', 'poolId', 'appClientId'];
+  userservice.$inject = ['$q', '$filter', 'dbRegion', 'cognitoAccessKeyId', 'cognitoSecretAccessKey', 'dbAccessKeyId', 'dbSecretAccessKey', 'poolId', 'appClientId'];
   /* @ngInject */
-  function userservice($q, $filter, dbRegion, dbAccessKeyId, dbSecretAccessKey, poolId, appClientId) {
-    AWS.config.update({region: dbRegion, accessKeyId: dbAccessKeyId, secretAccessKey: dbSecretAccessKey});
+  function userservice($q, $filter, dbRegion, cognitoAccessKeyId, cognitoSecretAccessKey, dbAccessKeyId, dbSecretAccessKey, poolId, appClientId) {
+    //AWS.config.update({region: dbRegion, accessKeyId: dbAccessKeyId, secretAccessKey: dbSecretAccessKey});
 
     var service = {
       validateAnUser: validateAnUser,
-      registerAnUser: registerAnUser
+      signupAnUser: signupAnUser,
+      signinAnUser: signinAnUser
     };
 
     return service;
 
-    function validateAnUser(user) {
+    function signinAnUser(username, password) {
+      AWS.config.region = dbRegion;
+      AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: poolId
+      });
+      AWSCognito.config.region = dbRegion;
+      AWSCognito.config.credentials = new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: poolId
+      });
+      AWSCognito.config.update({accessKeyId: cognitoAccessKeyId, secretAccessKey: cognitoSecretAccessKey});
+      var authenticationData = {
+        Username : username,
+        Password : password
+      };
+      var authenticationDetails = new AWSCognito.CognitoIdentityServiceProvider.AuthenticationDetails(authenticationData);
+      var poolData = {
+        UserPoolId : poolId,
+        ClientId : appClientId
+      };
+      var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+      var userData = {
+        Username : username,
+        Pool : userPool
+      };
+      var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
       var deferred = $q.defer();
+      cognitoUser.authenticateUser(authenticationDetails, {
+          onSuccess: function (result) {
+            deferred.resolve(result);
+            console.log('access token + ' + result.getAccessToken().getJwtToken());
+          },
 
+          onFailure: function(err) {
+            deferred.reject(err);
+          },
 
-
-      return promise
+      });
+      return deferred.promise;
     }
 
-    /*
-     * require email, username, password
-     */
-    function registerAnUser(user) {
+    function validateAnUser() {
+      var isValidUser = false;
+      var data = {
+        UserPoolId : poolId,
+        ClientId : appClientId
+      };
+      var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(data);
+      var cognitoUser = userPool.getCurrentUser();
+
+      if (cognitoUser != null) {
+        cognitoUser.getSession(function(err, session) {
+          if (session != null)
+            isValidUser = session.isValid();
+        });
+      }
+
+      return isValidUser;
+    }
+
+    function signupAnUser(email, username, password) {
       AWS.config.region = dbRegion;
       AWS.config.credentials = new AWS.CognitoIdentityCredentials({
           IdentityPoolId: poolId
@@ -38,6 +87,8 @@
       AWSCognito.config.credentials = new AWS.CognitoIdentityCredentials({
           IdentityPoolId: poolId
       });
+
+      AWSCognito.config.update({accessKeyId: cognitoAccessKeyId, secretAccessKey: cognitoSecretAccessKey});
           
       var poolData = { UserPoolId : poolId,
           ClientId : appClientId
@@ -48,14 +99,14 @@
       
       var dataEmail = {
           Name : 'email',
-          Value : user.email
+          Value : email
       };
       var attributeEmail = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataEmail);
 
       attributeList.push(attributeEmail);
 
       var deferred = $q.defer();
-      userPool.signUp(user.username, user.password, attributeList, null, function(err, result){
+      userPool.signUp(username, password, attributeList, null, function(err, result){
           if (err) {
             deferred.reject(err);
           } 
@@ -63,7 +114,7 @@
             deferred.resolve(result.user);
           }
       });
-      return promise;
+      return deferred.promise;
     }
   }
 })();
