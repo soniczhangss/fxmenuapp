@@ -10,6 +10,10 @@ img {
    width: 100%; /* for IE 6 */
 }
 
+a {
+    text-decoration: none;
+}
+
 .restaurant-title {
 	position: absolute; 
 	bottom: 20px; 
@@ -23,8 +27,8 @@ img {
 }
 
 .bar.bar-profile {
-	background-color: #eee;
-	height: 170px;
+	background-color: #F6A230;
+	height: 26%;
 }
 
 .bar .profile {
@@ -48,8 +52,10 @@ img {
 
 .profile-picture {
 	border-radius: 50%;
+	width: 100px;
+	height: auto;
 }
 
 .menu .has-header {
-	top: 169px;
+	margin-top: 45%;
 }

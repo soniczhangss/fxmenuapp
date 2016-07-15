@@ -1,31 +1,29 @@
 <ion-modal-view>
   <ion-header-bar>
-    <h1 class="title">Login</h1>
+    <h1 class="title">登录</h1>
     <div class="buttons">
-      <button class="button" ng-click="closeSigninModal()">Close</button>
+      <button class="button button-clear button-stable" ng-click="closeSigninModal()">关闭</button>
     </div>
   </ion-header-bar>
   <ion-content>
     <form ng-submit="signinAnUser(username, password)">
       <div class="list">
         <label class="item item-input">
-          <span class="input-label">Username</span>
+          <span class="input-label">用户名</span>
           <input type="text" ng-model="username">
         </label>
         <label class="item item-input">
-          <span class="input-label">Password</span>
+          <span class="input-label">密码</span>
           <input type="password" ng-model="password">
         </label>
-        <label class="item">
-          <div class="row">
-            <div class="col col-50">
-              <input type="button" class="button button-block button-outline button-dark" ng-click="openSignupModal()" value="注册"></input>
-            </div>
-            <div class="col col-50">
-              <button class="button button-block button-outline button-positive" type="submit">登录</button>
-            </div>
+        <div class="row">
+          <div class="col col-50">
+            <button type="button" class="button button-block button-outline button-assertive" ng-click="openSignupModal()">注册</button>
           </div>
-        </label>
+          <div class="col col-50">
+            <button class="button button-block button-outline button-energized" type="submit">登录</button>
+          </div>
+        </div>
       </div>
     </form>
   </ion-content>

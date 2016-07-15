@@ -5,20 +5,48 @@
     .module('app.layout')
     .controller('MenuController', MenuController);
 
-  MenuController.$inject = ['$scope', '$ionicPopup', 'dataservice', 'shoppingcartservice', '$ionicModal', 'userservice', '$state'];
+  MenuController.$inject = ['$scope', '$cordovaCamera', '$ionicPopup', 'dataservice', 'shoppingcartservice', '$ionicModal', 'userservice', '$state'];
   /* @ngInject */
-  function MenuController($scope, $ionicPopup, dataservice, shoppingcartservice, $ionicModal, userservice, $state) {
+  function MenuController($scope, $cordovaCamera, $ionicPopup, dataservice, shoppingcartservice, $ionicModal, userservice, $state) {
   	$scope.shoppingcart = shoppingcartservice.shoppingcart;
 
   	$scope.user = {
   		username: '登录',
-  		portrait: ''
+  		portrait: 'img/user-profile/' + (Math.floor(Math.random() * 66) + 1) + ".png"
   	};
+
+  	$scope.takePhoto = function () {
+		var options = {
+			quality: 75,
+			destinationType: Camera.DestinationType.DATA_URL,
+			sourceType: Camera.PictureSourceType.CAMERA,
+			allowEdit: true,
+			encodingType: Camera.EncodingType.JPEG,
+			targetWidth: 300,
+			targetHeight: 300,
+			popoverOptions: CameraPopoverOptions,
+			saveToPhotoAlbum: false
+		};
+
+		$cordovaCamera.getPicture(options).then(function (imageData) {
+			$scope.imgURI = "data:image/jpeg;base64," + imageData;
+		}, function (err) {
+			console.log(err);
+		});
+    };
 
   	$scope.$on("side-menu open", function () {
   		$scope.isSignedIn = userservice.validateAnUser();
-  		// load user information
+  		initUser();
   	});
+
+  	$scope.$on("signin successfully", function () {
+  		initUser();
+  	});
+
+  	function initUser() {
+  		
+  	}
 
   	$scope.checkout = function (address, contactNum, selectedPaymentMethod) {
   		dataservice.checkout(address, contactNum, selectedPaymentMethod, shoppingcartservice.shoppingcart).then(
@@ -27,7 +55,6 @@
 	          $state.go("app.restaurant-list");
 	        },
 	        function (error) {
-	        	console.log(error);
 	          showAlert('不好意思', '订单失败');
 	        }
 	    );
@@ -36,10 +63,11 @@
   	$scope.signinAnUser = function (username, password) {
   		userservice.signinAnUser(username, password).then(
   			function (result) {
-	          $scope.proceedToCheckout();
+  				$scope.$broadcast("signin successfully");
+	          	$scope.closeSigninModal();
 	        },
 	        function (error) {
-	          showAlert('不好意思', '用户名密码不匹配或者用户名不存在');
+	          	showAlert('不好意思', '用户名密码不匹配或者用户名不存在');
 	        }
 	    );
   	};
@@ -71,7 +99,7 @@
 		});
 
 		alertPopup.then(function(res) {
-			console.log(res);
+			//console.log(res);
 		});
 	};
 
@@ -86,6 +114,7 @@
 		$scope.signupModal.show();
 		$scope.closeSigninModal();
 	};
+
 	$scope.closeSignupModal = function() {
 		$scope.signupModal.hide();
 	};
@@ -100,6 +129,7 @@
 	$scope.openSigninModal = function() {
 		$scope.signinModal.show();
 	};
+
 	$scope.closeSigninModal = function() {
 		$scope.signinModal.hide();
 	};
@@ -114,6 +144,7 @@
 	$scope.openShoppingCart = function() {
 		$scope.shoppingcartModal.show();
 	};
+
 	$scope.closeShoppingCart = function() {
 		$scope.shoppingcartModal.hide();
 	};
