@@ -26,9 +26,9 @@ a {
 	padding: 10px; 
 }
 
-.bar.bar-profile {
+.bar-profile.bar.bar-header {
 	background-color: #F6A230;
-	height: 26%;
+	height: 190px !important;
 }
 
 .bar .profile {
@@ -57,5 +57,5 @@ a {
 }
 
 .menu .has-header {
-	margin-top: 45%;
+	margin-top: 120px;
 }
