@@ -10,17 +10,18 @@
   function MenuController($scope, $interval, $ionicLoading, $cordovaCamera, $ionicPopup, dataservice, shoppingcartservice, $ionicModal, userservice, $state) {
   	$scope.shoppingcart = shoppingcartservice.shoppingcart;
 
-  	$scope.user = {
-  		username: '登录',
-  		portrait: 'img/user-profile/' + (Math.floor(Math.random() * 66) + 1) + ".png"
-  	};
-
   	loadUser();
 
   	function loadUser() {
   		var currentUser = userservice.getCurrentUser();
   		if (currentUser)
   			$scope.user = currentUser;
+  		else {
+  			$scope.user = {
+		  		username: '登录',
+		  		portrait: 'img/user-profile/' + (Math.floor(Math.random() * 66) + 1) + ".png"
+		  	};
+  		}
   	}
 
   	$scope.takePhoto = function () {
@@ -51,6 +52,21 @@
   		loadUser();
   	});
 
+  	$scope.$on("signout successfully", function () {
+  		loadUser();
+  	});
+
+  	$scope.$on("signup successfully", function () {
+  		userservice.signinAnUser($scope.tmpUsername, $scope.tmpPassword).then(
+  			function (result) {
+	          $scope.$broadcast("signin successfully");
+	        },
+	        function (error) {
+	          showAlert('不好意思', '用户名密码不匹配或者用户名不存在');
+	        }
+	    );
+  	});
+
   	$scope.checkout = function (address, contactNum, selectedPaymentMethod) {
   		$ionicLoading.show({
 			template: '<ion-spinner class="spinner-energized" icon="lines"></ion-spinner>'
@@ -67,6 +83,11 @@
 	    ).finally(function () {
 	    	$ionicLoading.hide();
 	    });
+  	};
+
+  	$scope.signOutAnUser = function () {
+  		userservice.signOutAnUser($scope.user);
+  		$scope.$broadcast("signout successfully");
   	};
   	
   	$scope.signinAnUser = function (username, password) {
@@ -93,6 +114,7 @@
   		userservice.signupAnUser(email, username, password).then(
   			function (result) {
   			  $scope.tmpUsername = result;
+  			  $scope.tmpPassword = password;
   			  $scope.openValidationCodeModal();
 	        },
 	        function (error) {
@@ -178,6 +200,7 @@
   			function (result) {
   				showAlert('恭喜您', '注册成功');
   				$scope.closeValidationCodeModal();
+  				$scope.$broadcast("signup successfully");
 	        },
 	        function (error) {
 	          showAlert('不好意思', '验证码错误,请选择重新发送');

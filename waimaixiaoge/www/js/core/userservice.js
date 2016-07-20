@@ -14,12 +14,17 @@
       getCurrentUser: getCurrentUser,
       signupAnUser: signupAnUser,
       signinAnUser: signinAnUser,
+      signOutAnUser: signOutAnUser,
       confirmRegistration: confirmRegistration,
       resendValidationCode: resendValidationCode,
       syncAnUser: syncAnUser // Not yet implemented
     };
 
     return service;
+
+    function signOutAnUser(user) {
+      user.signOut();
+    }
 
     function resendValidationCode(username) {
       var poolData = {
@@ -34,7 +39,7 @@
       };
 
       var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
-      
+
       var deferred = $q.defer();
       cognitoUser.resendConfirmationCode(function(err, result) {
           if (err) {
