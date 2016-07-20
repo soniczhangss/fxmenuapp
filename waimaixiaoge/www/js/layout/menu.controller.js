@@ -161,6 +161,21 @@
 		$scope.signupModal.hide();
 	};
 
+	$scope.proceedToResetPassword = function (username) {
+		userservice.forgotPassword(username).then(
+  			function (result) {
+  				$state.go("app.resetpassword");
+	        },
+	        function (error) {
+	        	showAlert('不好意思', '用户名不正确或者用户名不存在');
+	        }
+	    );
+	};
+
+	$scope.setNewPassword = function (username, verificationCode, newPassword) {
+		userservice.resetPassword(username, verificationCode, newPassword);
+	};
+
 	$ionicModal.fromTemplateUrl('js/user/validationCode.html', {
 		scope: $scope,
 		animation: 'slide-in-up',

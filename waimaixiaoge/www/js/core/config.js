@@ -65,6 +65,22 @@
           templateUrl: 'js/layout/checkout.html'
         }
       }
+    })
+    .state('app.forgotpassword', {
+      url: '/forgotpassword',
+      views: {
+        'menuContent': {
+          templateUrl: 'js/user/forgotPassword.html'
+        }
+      }
+    })
+    .state('app.resetpassword', {
+      url: '/resetpassword',
+      views: {
+        'menuContent': {
+          templateUrl: 'js/user/resetPassword.html'
+        }
+      }
     });
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/app/restaurant-list');

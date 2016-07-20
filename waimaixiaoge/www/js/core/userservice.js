@@ -17,10 +17,56 @@
       signOutAnUser: signOutAnUser,
       confirmRegistration: confirmRegistration,
       resendValidationCode: resendValidationCode,
+      forgotPassword: forgotPassword,
+      resetPassword: resetPassword, // Not yet implemented
       syncAnUser: syncAnUser // Not yet implemented
     };
 
     return service;
+
+    function resetPassword(username, verificationCode, newPassword) {
+      var poolData = {
+          UserPoolId : poolId,
+          ClientId : appClientId
+      };
+
+      var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+      var userData = {
+          Username : username,
+          Pool : userPool
+      };
+
+      var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
+      
+      cognitoUser.confirmPassword(verificationCode, newPassword, this);
+    }
+
+    function forgotPassword(username) {
+      var poolData = {
+          UserPoolId : poolId,
+          ClientId : appClientId
+      };
+
+      var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+      var userData = {
+          Username : username,
+          Pool : userPool
+      };
+
+      var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
+
+      var deferred = $q.defer();
+      cognitoUser.forgotPassword({
+          onSuccess: function (result) {
+              deferred.resolve(result);
+          },
+          onFailure: function(err) {
+              deferred.reject(err);
+          },
+          inputVerificationCode() {}
+      });
+      return deferred.promise;
+    }
 
     function signOutAnUser(user) {
       user.signOut();
