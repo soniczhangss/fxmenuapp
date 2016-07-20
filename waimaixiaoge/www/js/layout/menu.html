@@ -17,13 +17,19 @@
     <ion-header-bar class="bar-profile">
       <div class="profile">
         <img class="profile-picture" ng-src="{{ user.portrait }}" ng-click="takePhoto()" />
-        <a href="#" ng-click="openSigninModal()"><h3 class="name">{{ user.username }}</h3></a>
+        <a href="#" ng-click="user.signInUserSession ? null : openSigninModal()"><h3 class="name">{{ user.username }}</h3></a>
       </div>
     </ion-header-bar>
     <ion-content>
       <ion-list>
         <ion-item menu-close href="#/app/restaurant-list">
           餐厅
+        </ion-item>
+        <ion-item menu-close href="#" ng-show="user.signInUserSession">
+          我的订单
+        </ion-item>
+        <ion-item menu-close href="#" ng-show="user.signInUserSession">
+          登出
         </ion-item>
       </ion-list>
     </ion-content>
