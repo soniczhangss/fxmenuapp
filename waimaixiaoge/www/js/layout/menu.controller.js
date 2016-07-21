@@ -5,9 +5,9 @@
     .module('app.layout')
     .controller('MenuController', MenuController);
 
-  MenuController.$inject = ['$scope', '$interval', '$ionicLoading', '$cordovaCamera', '$ionicPopup', 'dataservice', 'shoppingcartservice', '$ionicModal', 'userservice', '$state'];
+  MenuController.$inject = ['$scope', 'popupsservice', '$ionicSideMenuDelegate', '$interval', '$ionicLoading', '$cordovaCamera', '$ionicPopup', 'dataservice', 'shoppingcartservice', '$ionicModal', 'userservice', '$state'];
   /* @ngInject */
-  function MenuController($scope, $interval, $ionicLoading, $cordovaCamera, $ionicPopup, dataservice, shoppingcartservice, $ionicModal, userservice, $state) {
+  function MenuController($scope, popupsservice, $ionicSideMenuDelegate, $interval, $ionicLoading, $cordovaCamera, $ionicPopup, dataservice, shoppingcartservice, $ionicModal, userservice, $state) {
   	$scope.shoppingcart = shoppingcartservice.shoppingcart;
 
   	loadUser();
@@ -62,7 +62,7 @@
 	          $scope.$broadcast("signin successfully");
 	        },
 	        function (error) {
-	          showAlert('不好意思', '用户名密码不匹配或者用户名不存在');
+	          popupsservice.showAlert('不好意思', '用户名密码不匹配或者用户名不存在');
 	        }
 	    );
   	});
@@ -73,12 +73,12 @@
 		});
   		dataservice.checkout(address, contactNum, selectedPaymentMethod, shoppingcartservice.shoppingcart).then(
   			function (result) {
-	          showAlert('恭喜', '订单成功');
+	          popupsservice.showAlert('恭喜', '订单成功');
 	          $state.go("app.restaurant-list");
 	        },
 	        function (error) {
 	        	console.log(error);
-	          showAlert('不好意思', '订单失败');
+	          popupsservice.showAlert('不好意思', '订单失败');
 	        }
 	    ).finally(function () {
 	    	$ionicLoading.hide();
@@ -100,7 +100,7 @@
 	          $scope.closeSigninModal();
 	        },
 	        function (error) {
-	          showAlert('不好意思', '用户名密码不匹配或者用户名不存在');
+	          popupsservice.showAlert('不好意思', '用户名密码不匹配或者用户名不存在');
 	        }
 	    ).finally(function () {
 	    	$ionicLoading.hide();
@@ -118,7 +118,7 @@
   			  $scope.openValidationCodeModal();
 	        },
 	        function (error) {
-	          showAlert('不好意思', '信息不符合要求');
+	          popupsservice.showAlert('不好意思', '信息不符合要求');
 	        }
 	    ).finally(function () {
 	    	$scope.closeSignupModal();
@@ -130,21 +130,10 @@
   		if (userservice.getCurrentUser()) {
   			$state.go("app.checkout");
   		} else {
-  			showAlert('不好意思', '请您先登录');
+  			popupsservice.showAlert('不好意思', '请您先登录');
   		}
   		$scope.closeShoppingCart();
   	};
-
-	var showAlert = function(title, template) {
-		var alertPopup = $ionicPopup.alert({
-			title: title,
-			template: template
-		});
-
-		alertPopup.then(function(res) {
-			console.log(res);
-		});
-	};
 
 	$ionicModal.fromTemplateUrl('js/user/signup.html', {
 		scope: $scope,
@@ -161,22 +150,13 @@
 		$scope.signupModal.hide();
 	};
 
-	$scope.proceedToResetPassword = function (username) {
-		userservice.forgotPassword(username).then(
-  			function (result) {
-  				$state.go("app.resetpassword");
-	        },
-	        function (error) {
-	        	showAlert('不好意思', '用户名不正确或者用户名不存在');
-	        }
-	    );
+	$scope.forgotPassword = function () {
+		$state.go("app.forgot-password");
+		$ionicSideMenuDelegate.toggleLeft();
+		$scope.closeSigninModal();
 	};
 
-	$scope.setNewPassword = function (username, verificationCode, newPassword) {
-		userservice.resetPassword(username, verificationCode, newPassword);
-	};
-
-	$ionicModal.fromTemplateUrl('js/user/validationCode.html', {
+	$ionicModal.fromTemplateUrl('js/user/validation-code.html', {
 		scope: $scope,
 		animation: 'slide-in-up',
 		focusFirstInput: true
@@ -197,10 +177,10 @@
 		});
 		userservice.resendValidationCode($scope.tmpUsername).then(
   			function (result) {
-  				showAlert('您好', '验证码已发送');
+  				popupsservice.showAlert('您好', '验证码已发送');
 	        },
 	        function (error) {
-	          	showAlert('不好意思', '验证码发送失败');
+	          	popupsservice.showAlert('不好意思', '验证码发送失败');
 	        }
 	    ).finally(function () {
 	    	$ionicLoading.hide();
@@ -213,12 +193,12 @@
 		});
 		userservice.confirmRegistration($scope.tmpUsername, validationCode).then(
   			function (result) {
-  				showAlert('恭喜您', '注册成功');
+  				popupsservice.showAlert('恭喜您', '注册成功');
   				$scope.closeValidationCodeModal();
   				$scope.$broadcast("signup successfully");
 	        },
 	        function (error) {
-	          showAlert('不好意思', '验证码错误,请选择重新发送');
+	          popupsservice.showAlert('不好意思', '验证码错误,请选择重新发送');
 	        }
 	    ).finally(function () {
 	    	$ionicLoading.hide();

@@ -11,7 +11,7 @@
     $scope.restaurant = $stateParams.restaurant;
 
     $scope.addToCart = function(item) {
-		shoppingcartservice.addAnItem(item);
-	};
+  		shoppingcartservice.addAnItem(item);
+  	};
   }
 })();

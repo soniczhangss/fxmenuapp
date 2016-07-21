@@ -4,7 +4,8 @@
   angular.module('app', [
     'app.core',
     'app.layout',
-    'app.restaurant'
+    'app.restaurant',
+    'app.user'
   ]);
 
 })();

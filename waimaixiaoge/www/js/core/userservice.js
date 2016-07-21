@@ -38,10 +38,26 @@
 
       var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
       
-      cognitoUser.confirmPassword(verificationCode, newPassword, this);
+      var deferred = $q.defer();
+      cognitoUser.confirmPassword(verificationCode, newPassword, {
+          onSuccess: function (result) {
+            console.log(result);
+            deferred.resolve(result);
+          },
+          onFailure: function(err) {
+            console.log(err);
+            deferred.reject(err);
+          }
+      });
+      return deferred.promise;
     }
 
     function forgotPassword(username) {
+      AWSCognito.config.region = dbRegion;
+      AWSCognito.config.credentials = new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: poolId
+      });
+      AWSCognito.config.update({accessKeyId: cognitoAccessKeyId, secretAccessKey: cognitoSecretAccessKey});
       var poolData = {
           UserPoolId : poolId,
           ClientId : appClientId
@@ -57,13 +73,13 @@
 
       var deferred = $q.defer();
       cognitoUser.forgotPassword({
-          onSuccess: function (result) {
-              deferred.resolve(result);
-          },
           onFailure: function(err) {
-              deferred.reject(err);
+            console.log(err);
+            deferred.reject(err);
           },
-          inputVerificationCode() {}
+          inputVerificationCode() {
+            deferred.resolve(this);
+          }
       });
       return deferred.promise;
     }

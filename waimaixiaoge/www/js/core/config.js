@@ -66,23 +66,26 @@
         }
       }
     })
-    .state('app.forgotpassword', {
-      url: '/forgotpassword',
+    .state('app.forgot-password', {
+      url: '/forgot-password',
       views: {
         'menuContent': {
-          templateUrl: 'js/user/forgotPassword.html'
+          templateUrl: 'js/user/forgot-password.html',
+          controller: 'forgotPasswordController'
         }
       }
     })
-    .state('app.resetpassword', {
-      url: '/resetpassword',
+    .state('app.reset-password', {
+      url: '/reset-password',
       views: {
         'menuContent': {
-          templateUrl: 'js/user/resetPassword.html'
+          templateUrl: 'js/user/reset-password.html',
+          controller: 'resetPasswordController'
         }
-      }
+      },
+      params: { username: null}
     });
-    // if none of the above states are matched, use this as the fallback
+
     $urlRouterProvider.otherwise('/app/restaurant-list');
 
     localStorageServiceProvider
