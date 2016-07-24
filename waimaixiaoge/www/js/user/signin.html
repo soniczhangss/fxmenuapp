@@ -16,16 +16,15 @@
           <span class="input-label">密码</span>
           <input type="password" ng-model="password">
         </label>
-        <label class="item">
-          <div class="row">
-            <div class="col col-50">
-              <input type="button" class="button button-block button-outline button-assertive" ng-click="openSignupModal()" value="注册"></input>
-            </div>
-            <div class="col col-50">
-              <button class="button button-block button-outline button-energized" type="submit">登录</button>
-            </div>
+        <button type="button" ng-click="forgotPassword()" class="button button-clear button-positive">忘记密码</button>
+        <div class="row">
+          <div class="col col-50">
+            <button type="button" class="button button-block button-outline button-assertive" ng-click="openSignupModal()">注册</button>
           </div>
-        </label>
+          <div class="col col-50">
+            <button class="button button-block button-outline button-energized" type="submit">登录</button>
+          </div>
+        </div>
       </div>
     </form>
   </ion-content>

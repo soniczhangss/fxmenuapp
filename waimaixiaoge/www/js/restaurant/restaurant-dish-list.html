@@ -3,7 +3,7 @@
 		<div class="item item-body">
 			<img ng-src="{{ restaurant.restaurantThumbnail.S }}">
 			<div class="list">
-				<div class="item item-thumbnail-left" ng-repeat="dish in restaurant.restaurantMenu.L">
+				<div class="item item-thumbnail-left" ng-repeat="dish in restaurant.restaurantMenu.L | filter:dishType">
 					<img ng-src="{{dish.M.dishThumbnail.S}}">
 					<div class="row">
 						<div class="col"><h2>{{dish.M.name.S}}</h2></div>

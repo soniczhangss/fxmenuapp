@@ -48,12 +48,22 @@
         }
       }
     })
-    .state('app.restaurant', {
-      url: '/restaurant',
+    .state('app.restaurant-dish-type-list', {
+      url: '/restaurant-dish-type-list',
       views: {
         'menuContent': {
-          templateUrl: 'js/restaurant/restaurant.html',
-          controller: 'RestaurantController'
+          templateUrl: 'js/restaurant/restaurant-dish-type-list.html',
+          controller: 'RestaurantDishTypeListController'
+        }
+      },
+      params: { restaurant: null}
+    })
+    .state('app.restaurant-dish-list', {
+      url: '/restaurant-dish-list',
+      views: {
+        'menuContent': {
+          templateUrl: 'js/restaurant/restaurant-dish-list.html',
+          controller: 'RestaurantDishListController'
         }
       },
       params: { restaurant: null}
@@ -65,8 +75,27 @@
           templateUrl: 'js/layout/checkout.html'
         }
       }
+    })
+    .state('app.forgot-password', {
+      url: '/forgot-password',
+      views: {
+        'menuContent': {
+          templateUrl: 'js/user/forgot-password.html',
+          controller: 'forgotPasswordController'
+        }
+      }
+    })
+    .state('app.reset-password', {
+      url: '/reset-password',
+      views: {
+        'menuContent': {
+          templateUrl: 'js/user/reset-password.html',
+          controller: 'resetPasswordController'
+        }
+      },
+      params: { username: null}
     });
-    // if none of the above states are matched, use this as the fallback
+
     $urlRouterProvider.otherwise('/app/restaurant-list');
 
     localStorageServiceProvider

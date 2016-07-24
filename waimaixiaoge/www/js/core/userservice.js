@@ -11,12 +11,150 @@
     //AWS.config.update({region: dbRegion, accessKeyId: dbAccessKeyId, secretAccessKey: dbSecretAccessKey});
 
     var service = {
-      validateAnUser: validateAnUser,
+      getCurrentUser: getCurrentUser,
       signupAnUser: signupAnUser,
-      signinAnUser: signinAnUser
+      signinAnUser: signinAnUser,
+      signOutAnUser: signOutAnUser,
+      confirmRegistration: confirmRegistration,
+      resendValidationCode: resendValidationCode,
+      forgotPassword: forgotPassword,
+      resetPassword: resetPassword, // Not yet implemented
+      syncAnUser: syncAnUser // Not yet implemented
     };
 
     return service;
+
+    function resetPassword(username, verificationCode, newPassword) {
+      var poolData = {
+          UserPoolId : poolId,
+          ClientId : appClientId
+      };
+
+      var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+      var userData = {
+          Username : username,
+          Pool : userPool
+      };
+
+      var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
+      
+      var deferred = $q.defer();
+      cognitoUser.confirmPassword(verificationCode, newPassword, {
+          onSuccess: function (result) {
+            console.log(result);
+            deferred.resolve(result);
+          },
+          onFailure: function(err) {
+            console.log(err);
+            deferred.reject(err);
+          }
+      });
+      return deferred.promise;
+    }
+
+    function forgotPassword(username) {
+      AWSCognito.config.region = dbRegion;
+      AWSCognito.config.credentials = new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: poolId
+      });
+      AWSCognito.config.update({accessKeyId: cognitoAccessKeyId, secretAccessKey: cognitoSecretAccessKey});
+      var poolData = {
+          UserPoolId : poolId,
+          ClientId : appClientId
+      };
+
+      var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+      var userData = {
+          Username : username,
+          Pool : userPool
+      };
+
+      var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
+
+      var deferred = $q.defer();
+      cognitoUser.forgotPassword({
+          onFailure: function(err) {
+            console.log(err);
+            deferred.reject(err);
+          },
+          inputVerificationCode() {
+            deferred.resolve(this);
+          }
+      });
+      return deferred.promise;
+    }
+
+    function signOutAnUser(user) {
+      user.signOut();
+    }
+
+    function resendValidationCode(username) {
+      var poolData = {
+          UserPoolId : poolId,
+          ClientId : appClientId
+      };
+
+      var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+      var userData = {
+          Username : username,
+          Pool : userPool
+      };
+
+      var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
+
+      var deferred = $q.defer();
+      cognitoUser.resendConfirmationCode(function(err, result) {
+          if (err) {
+            deferred.reject(err);
+          } 
+          else {
+            deferred.resolve(result);
+          }
+      });
+      return deferred.promise;
+    }
+
+    function confirmRegistration(username, validationCode) {
+      var poolData = {
+          UserPoolId : poolId,
+          ClientId : appClientId
+      };
+
+      var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+      var userData = {
+          Username : username,
+          Pool : userPool
+      };
+
+      var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
+      var deferred = $q.defer();
+      cognitoUser.confirmRegistration(validationCode, true, function(err, result) {
+          if (err) {
+            deferred.reject(err);
+          } 
+          else {
+            deferred.resolve(result);
+          }
+      });
+      return deferred.promise;
+    }
+
+    function syncAnUser() {
+      var syncManager = new AWS.CognitoSyncManager();
+      syncManager.openOrCreateDataset('waimaixiaogeUserProfile', function(err, dataset) {
+        dataset.put('waimaixiaogeUserProfileImg', waimaixiaogeUserProfileImgURL, function(err, record) {
+          console.log(record);
+        });
+      });
+      syncManager.openOrCreateDataset('waimaixiaogeUserOrder', function(err, dataset) {
+        dataset.get('waimaixiaogeUserOrderHistory', function(err, value) {
+          dataset.put('waimaixiaogeUserOrderHistory', value.push(newOrders), function(err, record) {
+            console.log(record);
+          });
+        });
+        dataset.synchronize();
+      });
+    }
 
     function signinAnUser(username, password) {
       AWS.config.region = dbRegion;
@@ -58,8 +196,8 @@
       return deferred.promise;
     }
 
-    function validateAnUser() {
-      var isValidUser = false;
+    function getCurrentUser() {
+      var currentUser = null;
       var data = {
         UserPoolId : poolId,
         ClientId : appClientId
@@ -70,11 +208,13 @@
       if (cognitoUser != null) {
         cognitoUser.getSession(function(err, session) {
           if (session != null)
-            isValidUser = session.isValid();
+            if(session.isValid()) {
+              currentUser = cognitoUser;
+            }
         });
       }
 
-      return isValidUser;
+      return currentUser;
     }
 
     function signupAnUser(email, username, password) {
@@ -111,7 +251,7 @@
             deferred.reject(err);
           } 
           else {
-            deferred.resolve(result.user);
+            deferred.resolve(result.user.getUsername());
           }
       });
       return deferred.promise;

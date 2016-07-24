@@ -10,8 +10,12 @@
   function RestaurantListController(dataservice, $scope, $ionicFilterBar, $timeout, $state) {
     var filterBarInstance;
 
-    $scope.restaurantDetails = function (restaurant) {
+    /*$scope.restaurantDetails = function (restaurant) {
        $state.go("app.restaurant", {restaurant: restaurant});
+    };*/
+
+    $scope.restaurantDishTypes = function (restaurant) {
+      $state.go("app.restaurant-dish-type-list", {restaurant: restaurant});
     };
 
     $scope.doRefresh = function () {
@@ -41,7 +45,15 @@
       loadRestaurants();
     });
 
-    var loadRestaurants = function() {
+    function loadRestaurantTypes() {
+      $scope.restaurantTypes = [];
+
+      angular.forEach($scope.restaurants, function(value, key) {
+        this.push(value.restaurantStyle.S);
+      }, $scope.restaurantTypes);
+    }
+
+    function loadRestaurants() {
       dataservice.getRestaurants().then(
         function (result) {
           $scope.restaurants = result.Items;

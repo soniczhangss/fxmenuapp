@@ -2,5 +2,11 @@
   'use strict';
 
   angular
-    .module('app.core', ['ionic', 'jett.ionic.filter.bar', 'LocalStorageModule', 'angular-uuid', 'ngCordova']);
+    .module('app.core', ['ionic',
+    					 'jett.ionic.filter.bar',
+    					 'LocalStorageModule',
+    					 'angular-uuid',
+    					 'ngCordova',
+    					 'blocks.popups',
+    					 'angular.filter']);
 })();

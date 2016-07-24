@@ -1,0 +1,16 @@
+<ion-view>
+	<ion-content>
+		<div class="item item-body">
+			<img ng-src="{{ restaurant.restaurantThumbnail.S }}">
+			<div class="list">
+				<ion-item ng-click="dishList(type)" ng-repeat="dishType in restaurant.restaurantMenu.L | unique:'M.category.S'">
+					<div class="row">
+						<div class="col-10"><span>{{ dishType.M.category.S }}</span></div>
+						<div class="col-80"></div>
+						<div class="col-10 ion-chevron-right"></div>
+					</div>
+				</ion-item>
+			</div>
+		</div>
+	</ion-content>
+</ion-view>
