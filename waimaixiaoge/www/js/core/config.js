@@ -5,15 +5,13 @@
 
   core.run(function($ionicPlatform, $rootScope, $ionicSideMenuDelegate) {
     $ionicPlatform.ready(function() {
-      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-      // for form inputs)
+
       if (window.cordova && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
         cordova.plugins.Keyboard.disableScroll(true);
 
       }
       if (window.StatusBar) {
-        // org.apache.cordova.statusbar required
         StatusBar.styleDefault();
       }
 
@@ -48,12 +46,22 @@
         }
       }
     })
-    .state('app.restaurant', {
-      url: '/restaurant',
+    .state('app.restaurant-dish-type-list', {
+      url: '/restaurant-dish-type-list',
       views: {
         'menuContent': {
-          templateUrl: 'js/restaurant/restaurant.html',
-          controller: 'RestaurantController'
+          templateUrl: 'js/restaurant/restaurant-dish-type-list.html',
+          controller: 'RestaurantDishTypeListController'
+        }
+      },
+      params: { restaurant: null}
+    })
+    .state('app.restaurant-dish-list', {
+      url: '/restaurant-dish-list',
+      views: {
+        'menuContent': {
+          templateUrl: 'js/restaurant/restaurant-dish-list.html',
+          controller: 'RestaurantDishListController'
         }
       },
       params: { restaurant: null}

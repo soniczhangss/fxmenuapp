@@ -6,7 +6,6 @@
     .controller('forgotPasswordController', forgotPasswordController);
 
   forgotPasswordController.$inject = ['$scope', 'popupsservice', '$state', '$ionicLoading', 'userservice', '$stateParams'];
-  /* @ngInject */
   function forgotPasswordController($scope, popupsservice, $state, $ionicLoading, userservice, $stateParams) {
   	$scope.proceedToResetPassword = function (username) {
 		$ionicLoading.show({

@@ -5,9 +5,8 @@
     .module('app.layout')
     .controller('MenuController', MenuController);
 
-  MenuController.$inject = ['$scope', 'popupsservice', '$ionicSideMenuDelegate', '$interval', '$ionicLoading', '$cordovaCamera', '$ionicPopup', 'dataservice', 'shoppingcartservice', '$ionicModal', 'userservice', '$state'];
-  /* @ngInject */
-  function MenuController($scope, popupsservice, $ionicSideMenuDelegate, $interval, $ionicLoading, $cordovaCamera, $ionicPopup, dataservice, shoppingcartservice, $ionicModal, userservice, $state) {
+  MenuController.$inject = ['$scope', 'popupsservice', '$ionicSideMenuDelegate', '$interval', '$ionicLoading', '$ionicPopup', 'dataservice', 'shoppingcartservice', '$ionicModal', 'userservice', '$state'];
+  function MenuController($scope, popupsservice, $ionicSideMenuDelegate, $interval, $ionicLoading, $ionicPopup, dataservice, shoppingcartservice, $ionicModal, userservice, $state) {
   	$scope.shoppingcart = shoppingcartservice.shoppingcart;
 
   	loadUser();
@@ -23,26 +22,6 @@
 		  	};
   		}
   	}
-
-  	$scope.takePhoto = function () {
-		var options = {
-			quality: 75,
-			destinationType: Camera.DestinationType.DATA_URL,
-			sourceType: Camera.PictureSourceType.CAMERA,
-			allowEdit: true,
-			encodingType: Camera.EncodingType.JPEG,
-			targetWidth: 300,
-			targetHeight: 300,
-			popoverOptions: CameraPopoverOptions,
-			saveToPhotoAlbum: false
-		};
-
-		$cordovaCamera.getPicture(options).then(function (imageData) {
-			$scope.imgURI = "data:image/jpeg;base64," + imageData;
-		}, function (err) {
-			console.log(err);
-		});
-    };
 
   	$scope.$on("side-menu open", function () {
   		loadUser();
@@ -77,7 +56,6 @@
 	          $state.go("app.restaurant-list");
 	        },
 	        function (error) {
-	        	console.log(error);
 	          popupsservice.showAlert('不好意思', '订单失败');
 	        }
 	    ).finally(function () {
@@ -240,7 +218,6 @@
 		$scope.shoppingcartModal.hide();
 	};
 
-	// Cleanup the modal when we're done with it!
 	$scope.$on('$destroy', function() {
 		$scope.shoppingcartModal.remove();
 		$scope.signinModal.remove();

@@ -2,15 +2,15 @@
   <ion-header-bar>
     <h1 class="title">共计 {{shoppingcart | sumByKey:'M.price.N' | currency}}</h1>
     <div class="buttons">
-      <button class="button" ng-click="closeShoppingCart()">Close</button>
+      <button class="button button-clear button-stable" ng-click="closeShoppingCart()">关闭</button>
     </div>
   </ion-header-bar>
   <ion-content>
     <form ng-submit="proceedToCheckout()">
       <div class="list">
         <div class="item item-thumbnail-left" ng-repeat="item in shoppingcart track by $index">
-          <img ng-src="{{item.M.dishThumbnail.S}}">
           <div class="row">
+            <div class="col"><img ng-src="{{item.M.dishThumbnail.S}}"></div>
             <div class="col"><h2>{{item.M.name.S}}</h2></div>
             <div class="col"><p>{{item.M.price.N | currency}}</p></div>
             <div class="col"><button class="button icon ion-minus-round" ng-click="removefromCart(item)"></button></div>

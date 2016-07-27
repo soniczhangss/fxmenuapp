@@ -7,5 +7,6 @@
     					 'LocalStorageModule',
     					 'angular-uuid',
     					 'ngCordova',
-    					 'blocks.popups']);
+    					 'blocks.popups',
+    					 'angular.filter']);
 })();

@@ -6,7 +6,6 @@
     .controller('resetPasswordController', resetPasswordController);
 
   resetPasswordController.$inject = ['$scope', 'popupsservice', '$stateParams', '$state', '$ionicLoading', 'userservice'];
-  /* @ngInject */
   function resetPasswordController($scope, popupsservice, $stateParams, $state, $ionicLoading, userservice) {
   	$scope.setNewPassword = function (verificationCode, newPassword) {
   		$ionicLoading.show({

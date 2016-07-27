@@ -6,9 +6,7 @@
     .factory('userservice', userservice);
 
   userservice.$inject = ['$q', '$filter', 'dbRegion', 'cognitoAccessKeyId', 'cognitoSecretAccessKey', 'dbAccessKeyId', 'dbSecretAccessKey', 'poolId', 'appClientId'];
-  /* @ngInject */
   function userservice($q, $filter, dbRegion, cognitoAccessKeyId, cognitoSecretAccessKey, dbAccessKeyId, dbSecretAccessKey, poolId, appClientId) {
-    //AWS.config.update({region: dbRegion, accessKeyId: dbAccessKeyId, secretAccessKey: dbSecretAccessKey});
 
     var service = {
       getCurrentUser: getCurrentUser,
@@ -18,8 +16,7 @@
       confirmRegistration: confirmRegistration,
       resendValidationCode: resendValidationCode,
       forgotPassword: forgotPassword,
-      resetPassword: resetPassword, // Not yet implemented
-      syncAnUser: syncAnUser // Not yet implemented
+      resetPassword: resetPassword
     };
 
     return service;
@@ -41,11 +38,9 @@
       var deferred = $q.defer();
       cognitoUser.confirmPassword(verificationCode, newPassword, {
           onSuccess: function (result) {
-            console.log(result);
             deferred.resolve(result);
           },
           onFailure: function(err) {
-            console.log(err);
             deferred.reject(err);
           }
       });
@@ -74,7 +69,6 @@
       var deferred = $q.defer();
       cognitoUser.forgotPassword({
           onFailure: function(err) {
-            console.log(err);
             deferred.reject(err);
           },
           inputVerificationCode() {
@@ -139,23 +133,6 @@
       return deferred.promise;
     }
 
-    function syncAnUser() {
-      var syncManager = new AWS.CognitoSyncManager();
-      syncManager.openOrCreateDataset('waimaixiaogeUserProfile', function(err, dataset) {
-        dataset.put('waimaixiaogeUserProfileImg', waimaixiaogeUserProfileImgURL, function(err, record) {
-          console.log(record);
-        });
-      });
-      syncManager.openOrCreateDataset('waimaixiaogeUserOrder', function(err, dataset) {
-        dataset.get('waimaixiaogeUserOrderHistory', function(err, value) {
-          dataset.put('waimaixiaogeUserOrderHistory', value.push(newOrders), function(err, record) {
-            console.log(record);
-          });
-        });
-        dataset.synchronize();
-      });
-    }
-
     function signinAnUser(username, password) {
       AWS.config.region = dbRegion;
       AWS.config.credentials = new AWS.CognitoIdentityCredentials({
@@ -185,7 +162,6 @@
       cognitoUser.authenticateUser(authenticationDetails, {
           onSuccess: function (result) {
             deferred.resolve(result);
-            console.log('access token + ' + result.getAccessToken().getJwtToken());
           },
 
           onFailure: function(err) {

@@ -6,7 +6,6 @@
     .factory('popupsservice', popupsservice);
 
   popupsservice.$inject = ['$ionicPopup'];
-  /* @ngInject */
   function popupsservice($ionicPopup) {
     var service = {
       showAlert: showAlert
