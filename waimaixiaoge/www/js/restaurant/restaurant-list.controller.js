@@ -6,13 +6,8 @@
     .controller('RestaurantListController', RestaurantListController);
 
   RestaurantListController.$inject = ['dataservice', '$scope', '$ionicFilterBar', '$timeout', '$state'];
-  /* @ngInject */
   function RestaurantListController(dataservice, $scope, $ionicFilterBar, $timeout, $state) {
     var filterBarInstance;
-
-    /*$scope.restaurantDetails = function (restaurant) {
-       $state.go("app.restaurant", {restaurant: restaurant});
-    };*/
 
     $scope.restaurantDishTypes = function (restaurant) {
       $state.go("app.restaurant-dish-type-list", {restaurant: restaurant});

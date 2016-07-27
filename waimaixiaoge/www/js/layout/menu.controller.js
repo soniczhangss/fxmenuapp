@@ -5,9 +5,8 @@
     .module('app.layout')
     .controller('MenuController', MenuController);
 
-  MenuController.$inject = ['$scope', 'popupsservice', '$ionicSideMenuDelegate', '$interval', '$ionicLoading', '$cordovaCamera', '$ionicPopup', 'dataservice', 'shoppingcartservice', '$ionicModal', 'userservice', '$state'];
-  /* @ngInject */
-  function MenuController($scope, popupsservice, $ionicSideMenuDelegate, $interval, $ionicLoading, $cordovaCamera, $ionicPopup, dataservice, shoppingcartservice, $ionicModal, userservice, $state) {
+  MenuController.$inject = ['$scope', 'popupsservice', '$ionicSideMenuDelegate', '$interval', '$ionicLoading', '$ionicPopup', 'dataservice', 'shoppingcartservice', '$ionicModal', 'userservice', '$state'];
+  function MenuController($scope, popupsservice, $ionicSideMenuDelegate, $interval, $ionicLoading, $ionicPopup, dataservice, shoppingcartservice, $ionicModal, userservice, $state) {
   	$scope.shoppingcart = shoppingcartservice.shoppingcart;
 
   	loadUser();
@@ -57,7 +56,6 @@
 	          $state.go("app.restaurant-list");
 	        },
 	        function (error) {
-	        	console.log(error);
 	          popupsservice.showAlert('不好意思', '订单失败');
 	        }
 	    ).finally(function () {
@@ -87,11 +85,11 @@
 	    });
   	};
 
-  	$scope.signupAnUser = function (email, username, password) {
+  	$scope.signupAnUser = function (phoneNum, username, password) {
   		$ionicLoading.show({
 			template: '<ion-spinner class="spinner-energized" icon="lines"></ion-spinner>'
 		});
-  		userservice.signupAnUser(email, username, password).then(
+  		userservice.signupAnUser(phoneNum, username, password).then(
   			function (result) {
   			  $scope.tmpUsername = result;
   			  $scope.tmpPassword = password;
@@ -220,7 +218,6 @@
 		$scope.shoppingcartModal.hide();
 	};
 
-	// Cleanup the modal when we're done with it!
 	$scope.$on('$destroy', function() {
 		$scope.shoppingcartModal.remove();
 		$scope.signinModal.remove();

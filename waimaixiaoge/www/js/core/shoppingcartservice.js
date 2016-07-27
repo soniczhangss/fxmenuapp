@@ -6,7 +6,6 @@
     .factory('shoppingcartservice', shoppingcartservice);
 
   shoppingcartservice.$inject = [];
-  /* @ngInject */
   function shoppingcartservice() {
 
     var shoppingcart = [];

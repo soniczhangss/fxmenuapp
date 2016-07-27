@@ -1,4 +1,3 @@
-/* global toastr:false, moment:false */
 (function() {
   'use strict';
 
@@ -10,8 +9,8 @@
     .constant('cognitoAccessKeyId', 'AKIAIXRFVA7APRADRNMQ')
     .constant('cognitoSecretAccessKey', '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')
     .constant('imgRepository', 'https://s3.amazonaws.com/fxmenu-admin-restaurant-img/')
-    .constant('poolId', 'us-east-1_S7YIiOyqI')
-    .constant('appClientId', 'l6n2n1j23qofohf9m2kqfcabo')
+    .constant('poolId', 'us-east-1_OcY7z3Eqp')
+    .constant('appClientId', '36q063b85d368q5g6g285lqdrb')
     .constant('dynamoDBRestaurantTableName', 'Restaurant-fxmenu')
     .constant('dynamoDBOrderTableName', 'Order-fxmenu');
 })();

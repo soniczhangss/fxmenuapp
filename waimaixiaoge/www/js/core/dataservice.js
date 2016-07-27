@@ -6,7 +6,6 @@
     .factory('dataservice', dataservice);
 
   dataservice.$inject = ['$q', '$filter', 'uuid', 'dynamoDBOrderTableName', 'dynamoDBRestaurantTableName', 'dbRegion', 'dbAccessKeyId', 'dbSecretAccessKey'];
-  /* @ngInject */
   function dataservice($q, $filter, uuid, dynamoDBOrderTableName, dynamoDBRestaurantTableName, dbRegion, dbAccessKeyId, dbSecretAccessKey) {
     AWS.config.update({region: dbRegion, accessKeyId: dbAccessKeyId, secretAccessKey: dbSecretAccessKey});
 

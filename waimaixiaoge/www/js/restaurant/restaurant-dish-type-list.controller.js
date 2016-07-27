@@ -6,7 +6,6 @@
     .controller('RestaurantDishTypeListController', RestaurantDishTypeListController);
 
   RestaurantDishTypeListController.$inject = ['$scope', '$state', '$stateParams'];
-  /* @ngInject */
   function RestaurantDishTypeListController($scope, $state, $stateParams) {
     $scope.restaurant = $stateParams.restaurant;
 
