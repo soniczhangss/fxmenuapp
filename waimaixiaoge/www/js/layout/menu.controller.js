@@ -85,11 +85,11 @@
 	    });
   	};
 
-  	$scope.signupAnUser = function (email, username, password) {
+  	$scope.signupAnUser = function (phoneNum, username, password) {
   		$ionicLoading.show({
 			template: '<ion-spinner class="spinner-energized" icon="lines"></ion-spinner>'
 		});
-  		userservice.signupAnUser(email, username, password).then(
+  		userservice.signupAnUser(phoneNum, username, password).then(
   			function (result) {
   			  $scope.tmpUsername = result;
   			  $scope.tmpPassword = password;

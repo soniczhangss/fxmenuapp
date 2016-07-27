@@ -193,7 +193,7 @@
       return currentUser;
     }
 
-    function signupAnUser(email, username, password) {
+    function signupAnUser(phoneNum, username, password) {
       AWS.config.region = dbRegion;
       AWS.config.credentials = new AWS.CognitoIdentityCredentials({
           IdentityPoolId: poolId
@@ -213,13 +213,13 @@
 
       var attributeList = [];
       
-      var dataEmail = {
-          Name : 'email',
-          Value : email
+      var dataPhoneNum = {
+          Name : 'phone_number',
+          Value : phoneNum
       };
-      var attributeEmail = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataEmail);
+      var attributePhoneNum = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataPhoneNum);
 
-      attributeList.push(attributeEmail);
+      attributeList.push(attributePhoneNum);
 
       var deferred = $q.defer();
       userPool.signUp(username, password, attributeList, null, function(err, result){
