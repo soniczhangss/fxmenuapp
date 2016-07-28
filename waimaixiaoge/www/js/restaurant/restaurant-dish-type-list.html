@@ -1,7 +1,16 @@
 <ion-view>
 	<ion-content>
 		<div class="item item-body">
-			<img ng-src="{{ restaurant.restaurantThumbnail.S }}">
+			<div class="card">
+				<div class="item item-image">
+					<img mg-url-from-cdn="{{ restaurant.restaurantThumbnail.S }}">
+				</div>
+				<div class="item item-text-wrap">
+					<p>餐厅简介: {{ restaurant.restaurantDescription.S }}</p>
+					<p>餐厅联系电话: {{ restaurant.restaurantContactNumber.S }}</p>
+				</div>
+			</div>
+			
 			<div class="list">
 				<ion-item ng-click="dishList(type)" ng-repeat="dishType in restaurant.restaurantMenu.L | unique:'M.category.S'">
 					<div class="row">

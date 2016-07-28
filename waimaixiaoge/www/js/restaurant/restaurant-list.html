@@ -28,7 +28,7 @@
 		<ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()"></ion-refresher>
 		<ion-list>
 			<ion-item ng-repeat="restaurant in restaurants | filter:restaurantLocation | filter:restaurantStatus" ng-click="restaurantDishTypes(restaurant)">
-				<img ng-src="{{ restaurant.restaurantThumbnail.S }}">
+				<img img-url-from-cdn="{{ restaurant.restaurantThumbnail.S }}">
 				<span class="restaurant-title">{{ restaurant.restaurantName.S }}</span>
 			</ion-item>
 		</ion-list>

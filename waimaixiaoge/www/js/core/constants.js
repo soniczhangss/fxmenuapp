@@ -12,5 +12,6 @@
     .constant('poolId', 'us-east-1_OcY7z3Eqp')
     .constant('appClientId', '36q063b85d368q5g6g285lqdrb')
     .constant('dynamoDBRestaurantTableName', 'Restaurant-fxmenu')
-    .constant('dynamoDBOrderTableName', 'Order-fxmenu');
+    .constant('dynamoDBOrderTableName', 'Order-fxmenu')
+    .constant('cloudFrontDomainName4RestaurantImg', 'http://d2v5pf7yzcotd6.cloudfront.net/');
 })();

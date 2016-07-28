@@ -8,5 +8,6 @@
     					 'angular-uuid',
     					 'ngCordova',
     					 'blocks.popups',
+    					 'blocks.util',
     					 'angular.filter']);
 })();
