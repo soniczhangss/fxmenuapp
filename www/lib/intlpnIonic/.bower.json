@@ -1,0 +1,26 @@
+{
+  "name": "intlpnIonic",
+  "version": "0.1.7",
+  "homepage": "https://github.com/pierre-vigier/intlpnIonic",
+  "authors": [
+    "Pierre Vigier"
+  ],
+  "main": [
+    "./js/intlpnIonic.js",
+    "./js/data.js",
+    "./css/intlpn.css",
+    "./img/intlpn-flags.png",
+    "./lib/libphonenumber/build/utils.js"
+  ],
+  "license": "MIT",
+  "_release": "0.1.7",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.7",
+    "commit": "451ed7980faef230322f34346f5595f91ea20e52"
+  },
+  "_source": "https://github.com/pierre-vigier/intlpnIonic.git",
+  "_target": "^0.1.7",
+  "_originalSource": "intlpnIonic",
+  "_direct": true
+}

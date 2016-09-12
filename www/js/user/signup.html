@@ -1,0 +1,44 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">用户注册</h1>
+    <div class="buttons">
+      <button type="button" class="button button-clear button-stable" ng-click="closeSignupModal()">关闭</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form name="signupform" ng-submit="signupform.$valid && signupAnUser(phoneNum, username, password)">
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label">电话号码</span>
+          <intlpn name="phoneNum" ng-model="phoneNum" default-country="au" required=""></intlpn>
+        </label>
+        <div ng-show="signupform.phoneNum.$error" ng-messages="signupform.phoneNum.$error" style="color:maroon" role="alert">
+          <div ng-message="required">需要电话号码</div>
+        </div>
+        <label class="item item-input">
+          <span class="input-label">用户名</span>
+          <input name="username" type="text" ng-model="username" required="">
+        </label>
+        <div ng-show="signupform.username.$error" ng-messages="signupform.username.$error" style="color:maroon" role="alert">
+          <div ng-message="required">需要用户名</div>
+        </div>
+        <label class="item item-input">
+          <span class="input-label">密码</span>
+          <input name="password" type="password" ng-model="password" ng-minlength="8" required="">
+        </label>
+        <div ng-messages="signupform.password.$error" style="color:maroon" role="alert">
+          <div ng-message="required">需要密码</div>
+          <div ng-message="minlength">密码需要至少8位</div>
+        </div>
+        <label class="item item-input">
+          <span class="input-label">确认密码</span>
+          <input name="confirmPassword" type="password" ng-model="confirmPassword" match="password">
+        </label>
+        <div ng-show="signupform.confirmPassword.$error.match" style="color:maroon" role="alert">密码不匹配</div>
+        <label class="item">
+          <button class="button button-block button-positive" type="submit">提交</button>
+        </label>
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>
